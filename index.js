@@ -8,35 +8,30 @@ const app = express();
 // Configuration
 const PORT = 3000;
 const HOST = "localhost";
-const API_SERVICE_URL = "https://jsonplaceholder.typicode.com";
+
+// Define destination
+const API_PROXY_URL_1 = "https://jsonplaceholder.typicode.com";
+const API_PROXY_ENJOY_URL = "https://jsonplaceholder.typicode.com";
 
 // Logging
 app.use(morgan('dev'));
-
-// Info GET endpoint
-app.get('/info', (req, res, next) => {
-    res.send('Proxy is up and running! 🚀');
-});
-
-// Authorization (uncomment if needed & add some check to the headers)
-// app.use("", (req, res, next) => {
-//     if (req.headers.authorization) {
-//         next();
-//     } else {
-//         res.sendStatus(403);
-//     }
-// });
-
-// Proxy endpoints
-app.use('/json_placeholder', createProxyMiddleware({
-    target: API_SERVICE_URL,
-    changeOrigin: true,
-    pathRewrite: {
-        [`^/json_placeholder`]: '',
-    },
-}));
 
 // Start the Proxy
 app.listen(PORT, HOST, () => {
     console.log(`Starting Proxy at ${HOST}:${PORT}`);
 });
+
+/**
+ * Endpoints
+ */
+app.get('/info', (req, res, next) => {
+    res.send('Proxy is up and running! 🚀');
+});
+
+app.use('/enjoy', createProxyMiddleware({
+    target: API_PROXY_ENJOY_URL,
+    changeOrigin: true,
+    pathRewrite: {
+        [`^/enjoy`]: '',
+    },
+}));
