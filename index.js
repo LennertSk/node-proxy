@@ -1,17 +1,19 @@
 const express = require('express');
 const morgan = require("morgan");
+const cors = require('cors');
+
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 // Setup Express Server
 const app = express();
+app.use(cors());
 
 // Configuration
-const PORT = 3000;
+const PORT = 3050;
 const HOST = "localhost";
 
 // Define destination
 const API_PROXY_URL_1 = "https://jsonplaceholder.typicode.com";
-const API_PROXY_ENJOY_URL = "https://jsonplaceholder.typicode.com";
 
 // Logging
 app.use(morgan('dev'));
@@ -29,7 +31,7 @@ app.get('/info', (req, res, next) => {
 });
 
 app.use('/enjoy', createProxyMiddleware({
-    target: API_PROXY_ENJOY_URL,
+    target: API_PROXY_URL_1,
     changeOrigin: true,
     pathRewrite: {
         [`^/enjoy`]: '',
